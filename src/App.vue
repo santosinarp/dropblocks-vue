@@ -9,11 +9,11 @@
 </template>
 
 <style>
-#app {
-  /* font-family: 'Avenir', Helvetica, Arial, sans-serif; */
+/* #app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
+  text-align: center;
   color: #2c3e50;
 }
 #nav {
@@ -26,7 +26,20 @@
 }
 
 #nav a.router-link-exact-active {
-  /* color: #42b983; */
+  color: #42b983;
   color: white
+} */
+
+#loading-img {
+	background: url("http://www.chimply.com/images/samples/classic-spinner/animatedEllipse.gif") center center no-repeat;
+    display: none;
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    top: 33%;
+    left: 1%;
+    right: 1%;
+    margin: auto;
 }
+
 </style>

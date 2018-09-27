@@ -3,14 +3,18 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
+export const store = new Vuex.Store({
+    state: {
+        // input validator
+        inputValidator: {
+            dataRight : 'right input',
+            dataWrong : 'wrong input'
+        }
+    },
+    mutations: {
 
-  },
-  mutations: {
+    },
+    actions: {
 
-  },
-  actions: {
-
-  }
+    }
 })

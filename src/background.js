@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
 import {
@@ -73,4 +73,14 @@ app.on('ready', async () => {
     await installVueDevtools()
   }
   mainWindow = createMainWindow()
+})
+
+/*
+ * @dev by Santo Sinar Pandean
+ * @date 27 September 2018
+ * IPC to catch event success settings port
+ */
+
+ipcMain.on('settings-port:success', (e, item) => {
+  app.quit()
 })
