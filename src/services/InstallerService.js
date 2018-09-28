@@ -15,5 +15,11 @@ export default {
             network_port: networkPort,
             rpc_port: RPCPort
         })
+    },
+
+    createBlockchain(blockchainName) {
+        return MultichainApi().post('createBlockchain', {
+            blockchain_name: blockchainName
+        })
     }
 }

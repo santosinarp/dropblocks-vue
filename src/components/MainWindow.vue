@@ -97,7 +97,8 @@
                         </button>
                     </div>
                     <div class="col s6 offset-s6">
-                        <p class="error right" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
+                        <p class="error right">{{ processStatus }}</p>
+                        <p class="error right">{{ errorMessage }}</p>
                     </div>
                 </div>
             </div>
@@ -123,6 +124,8 @@ export default {
   },
   data () {
     return {
+        errorMessage: '',
+        processStatus: '',
         /*
         * start multichain
         */ 
@@ -157,7 +160,6 @@ export default {
         */
 
         loading: false,
-        submitStatus: null,
 
         /*
         * Start Style
@@ -195,22 +197,31 @@ export default {
       async installDropblocks (e) {
         this.opacity = 0.4,
         this.displayLoadingImage = 'block'
+        this.errorMessage = ''
+        this.processStatus = ''
         try{
             this.$v.$touch()
             if(this.$v.$invalid) {
-                
-                this.submitStatus = 'ERROR'
+                this.errorMessage = 'Please fill all field correctly'
             } else {
                 // validate the input
             
+                // create the blockchain (multichain)
+                this.processStatus = 'Create the blockchain...'
+                const createBlockchain = await InstallerService.createBlockchain(
+                    process.env.VUE_APP_MULTICHAIN_BLOCKCHAIN_NAME
+                )
+
                 // set ipfs port config
+                this.processStatus = 'Set port configuration for IPFS...'
                 const setIpfsPort = await InstallerService.setConfigIpfs(
                     this.ipfsApiPortModel, 
-                    this.ipfsGatewayPortModel, 
+                    this.ipfsGatewayPortModel,
                     this.ipfsSwarmPortModel
                 )
 
                 // set multichain port config
+                this.processStatus = 'Set port configuration for Multichain'
                 const setMultichainPort = await InstallerService.setConfigMultichain(
                     this.multichainNetworkPort,
                     this.multichainRPCPort
@@ -219,10 +230,15 @@ export default {
                 alert('Port Settings have been successfull')
                 ipcRenderer.send('settings-port:success')
             }
-            
 
         } catch(err) {
-            console.log(err)
+            this.processStatus = ''
+            if(typeof err.response !== 'undefined'){
+                this.errorMessage = err.response.data.error_message
+            } else {
+                this.errorMessage = err.message
+            }
+            
         } finally {
             setTimeout(() => {
                 this.opacity = 1
